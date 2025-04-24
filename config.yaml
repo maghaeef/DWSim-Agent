@@ -1,0 +1,55 @@
+# Chemical Process Design Agent Configuration
+
+# OpenAI API Configuration
+openai:
+  api_key: "${OPENAI_API_KEY}"  # Set via environment variable
+  organization: ""  # Optional: Your OpenAI organization ID
+
+# Agent Configuration
+agent:
+  model: "gpt-4o"  # OpenAI model to use
+  temperature: 0.2  # Lower temperature for more deterministic responses
+  max_iterations: 10  # Maximum number of design-simulation cycles
+  save_agent_responses: true  # Save full agent responses for debugging
+  system_message: >
+    You are an expert chemical process design engineer specializing in creating and optimizing 
+    chemical processes. Your task is to design complete chemical process flows that convert 
+    given raw materials into specified products. Your designs must include all necessary units 
+    (reactors, separators, heat exchangers, etc.), operating conditions, and process parameters.
+    Base your decisions on established chemical engineering principles including thermodynamics, 
+    reaction kinetics, mass and energy balances, and separation processes.
+
+# DWSIM Configuration
+dwsim:
+  install_path: "/usr/local/DWSIM"  # Path to DWSIM installation (change for your system)
+  property_package: "NRTL"  # Default property package
+  available_property_packages:
+    - "PR"        # Peng-Robinson
+    - "SRK"       # Soave-Redlich-Kwong
+    - "NRTL"      # Non-Random Two-Liquid
+    - "UNIQUAC"   # Universal Quasi-Chemical
+    - "GERG-2008" # GERG-2008 Equation of State
+    - "PC-SAFT"   # Perturbed-Chain Statistical Associating Fluid Theory
+    - "CPA"       # Cubic Plus Association
+  calculation_mode: "Sequential"  # DWSIM calculation mode: Sequential or Equation-Oriented
+  timeout: 300  # Maximum simulation runtime in seconds
+
+# Simulation Parameters
+simulation:
+  convergence_tolerance: 1e-6
+  max_iterations_per_simulation: 100
+  save_all_iterations: true  # Save results for all iterations
+  generate_plots: true  # Generate performance plots for each iteration
+
+# Evaluation Criteria
+evaluation:
+  mass_balance_tolerance: 0.01  # 1% tolerance for mass balance
+  energy_balance_tolerance: 0.05  # 5% tolerance for energy balance
+  purity_tolerance: 0.01  # 1% tolerance for product purity
+  yield_tolerance: 0.05  # 5% tolerance for product yield
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  file: "process_design_agent.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

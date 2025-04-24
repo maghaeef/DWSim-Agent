@@ -1,60 +1,92 @@
 # Chemical Process Design Agent
 
-An OpenAI-powered agent that designs chemical processes using DWSIM simulations.
-
-## Overview
-
-This system leverages OpenAI's capabilities to design chemical processes that convert given raw materials into specified products. It uses DWSIM, an open-source chemical process simulator, to validate and refine these designs.
+An intelligent agent that designs chemical processes based on raw materials and product specifications, and simulates them using DWSIM.
 
 ## Features
 
-- Takes raw materials and product specifications as input
-- Generates chemical process designs using OpenAI
-- Simulates designs in DWSIM to verify feasibility
-- Iteratively improves designs until specifications are met
-- Supports various thermodynamic property packages
-- Saves simulation outputs and design iterations for review
+- Uses OpenAI's API to create an intelligent agent for chemical process design
+- Automatically converts conceptual designs into DWSIM simulations
+- Iteratively improves process designs based on simulation results
+- Supports various thermodynamic property packages (PR, SRK, NRTL, UNIQUAC, GERG-2008, PC-SAFT, etc.)
+- Tracks simulation history for each iteration
+- Validates designs against mass and energy balance constraints
+- Works on Linux (Ubuntu) using DWSIM's Linux compatibility
 
-## Requirements
+## Prerequisites
 
-- Python 3.9+
-- DWSIM (Linux/Ubuntu installation)
-- OpenAI API key
+- Python 3.8 or higher
+- DWSIM installed on your system
+- An OpenAI API key with access to appropriate models (GPT-4 or later recommended)
+- For Linux (Ubuntu): Mono runtime environment for DWSIM
+
+### Installing DWSIM on Ubuntu Linux
+
+1. Install the Mono runtime environment:
+```bash
+sudo apt-get update
+sudo apt-get install mono-complete
+```
+
+2. Download the latest version of DWSIM for Linux from https://dwsim.org/download/
+3. Extract the archive to a location of your choice
+4. Add the DWSIM installation directory to your PATH or specify its location in the configuration file
 
 ## Installation
 
-1. Clone this repository
-2. Install Python dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-3. Install DWSIM following the instructions at [https://dwsim.org/](https://dwsim.org/)
-4. Create a `.env` file in the project root with your OpenAI API key:
-   ```
-   OPENAI_API_KEY=your_api_key_here
-   ```
+1. Clone this repository:
+```bash
+git clone https://github.com/yourusername/chemical-process-design-agent.git
+cd chemical-process-design-agent
+```
+
+2. Install the required Python packages:
+```bash
+pip install -r requirements.txt
+```
+
+3. Copy the example configuration file and update it with your settings:
+```bash
+cp config.example.yaml config.yaml
+```
+
+4. Set your OpenAI API key:
+```bash
+export OPENAI_API_KEY="your-api-key-here"
+```
 
 ## Usage
 
-Run the main script with your input files:
+Run the agent with your raw materials and product specifications:
 
 ```bash
-python main.py --raw-materials path/to/raw_materials.json --product-specs path/to/product_specs.json --property-package NRTL
+python main.py --raw-materials sample_inputs/raw_materials.json --product-specs sample_inputs/product_specs.json --output-dir results
 ```
 
-### Input Format
+### Command Line Arguments
+
+- `--raw-materials`: Path to JSON file containing raw materials (required)
+- `--product-specs`: Path to JSON file containing product specifications (required)
+- `--config`: Path to configuration file (default: config.yaml)
+- `--output-dir`: Directory to save simulation results (default: output)
+- `--property-package`: DWSIM property package to use (overrides config file)
+- `--max-iterations`: Maximum number of design iterations to run (overrides config file)
+- `--verbose`: Enable verbose logging
+
+### Input File Format
 
 #### Raw Materials JSON Format:
 ```json
 {
   "materials": [
     {
-      "name": "Ethanol",
-      "formula": "C2H6O",
+      "name": "Methane",
+      "formula": "CH4",
       "amount": 100,
-      "unit": "kg",
+      "unit": "kmol/h",
+      "state": "gas",
       "temperature": 25,
-      "pressure": 101.325
+      "pressure": 101.325,
+      "composition": 0.99
     },
     ...
   ]
@@ -66,28 +98,52 @@ python main.py --raw-materials path/to/raw_materials.json --product-specs path/t
 {
   "products": [
     {
-      "name": "Diethyl Ether",
-      "formula": "C4H10O",
-      "purity": 0.98,
-      "minimum_yield": 0.85,
-      "phase": "liquid",
-      "temperature_range": {"min": 20, "max": 30},
-      "pressure_range": {"min": 100, "max": 110}
+      "name": "Methanol",
+      "formula": "CH3OH",
+      "min_purity": 0.95,
+      "min_yield": 0.85,
+      "target_production_rate": 50,
+      "unit": "kmol/h",
+      "temperature_range": {
+        "min": 20,
+        "max": 30,
+        "unit": "C"
+      },
+      "pressure_range": {
+        "min": 101.0,
+        "max": 105.0,
+        "unit": "kPa"
+      }
     },
     ...
-  ],
-  "constraints": {
-    "max_temperature": 200,
-    "max_pressure": 1000,
-    "energy_consumption": {"max": 5000, "unit": "kJ/kg"}
-  }
+  ]
 }
 ```
 
+## Configuration
+
+The `config.yaml` file contains settings for the agent, DWSIM integration, and simulation parameters. Key settings include:
+
+- `agent.model`: The OpenAI model to use (e.g., "gpt-4")
+- `agent.max_iterations`: Maximum number of design iterations to try
+- `dwsim.install_path`: Path to your DWSIM installation
+- `dwsim.property_package`: Default thermodynamic property package to use
+- `dwsim.calculation_mode`: DWSIM calculation mode (e.g., "Sequential" or "Equation-Oriented")
+
 ## Output
 
-The system will create a directory with:
-- Final process design
-- DWSIM simulation files
-- Iteration history
-- Performance metrics and analysis reports
+The agent saves the following for each iteration:
+- Process flow diagram design (as a description and diagram)
+- DWSIM simulation file
+- Simulation results summary
+- Evaluation against product specifications and constraints
+- Final report summarizing the best design and its performance
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- DWSIM - The open source chemical process simulator
+- OpenAI - For providing the AI models used by the agent

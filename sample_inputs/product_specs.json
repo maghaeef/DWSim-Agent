@@ -1,0 +1,60 @@
+{
+    "products": [
+      {
+        "name": "Methanol",
+        "formula": "CH3OH",
+        "min_purity": 0.95,
+        "min_yield": 0.85,
+        "target_production_rate": 50.0,
+        "unit": "kmol/h",
+        "temperature_range": {
+          "min": 20.0,
+          "max": 30.0,
+          "unit": "C"
+        },
+        "pressure_range": {
+          "min": 101.0,
+          "max": 105.0,
+          "unit": "kPa"
+        },
+        "phase": "liquid"
+      },
+      {
+        "name": "Carbon Dioxide",
+        "formula": "CO2",
+        "min_purity": 0.90,
+        "min_yield": 0.70,
+        "target_production_rate": 25.0,
+        "unit": "kmol/h",
+        "temperature_range": {
+          "min": 15.0,
+          "max": 35.0,
+          "unit": "C"
+        },
+        "pressure_range": {
+          "min": 101.0,
+          "max": 110.0,
+          "unit": "kPa"
+        },
+        "phase": "gas"
+      }
+    ],
+    "process_constraints": {
+      "max_temperature": 500.0,
+      "temperature_unit": "C",
+      "max_pressure": 10000.0,
+      "pressure_unit": "kPa",
+      "max_energy_consumption": 5000.0,
+      "energy_unit": "kW",
+      "environmental_limits": {
+        "max_co2_emission": 10.0,
+        "unit": "kmol/h"
+      },
+      "safety_constraints": {
+        "avoid_compounds": ["HCN", "Phosgene"]
+      }
+    },
+    "additional_requirements": {
+      "notes": "Process should be designed for continuous operation with minimal waste generation"
+    }
+  }

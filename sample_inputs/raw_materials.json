@@ -1,0 +1,51 @@
+{
+    "materials": [
+      {
+        "name": "Methane",
+        "formula": "CH4",
+        "amount": 100.0,
+        "unit": "kmol/h",
+        "state": "gas",
+        "temperature": 25.0,
+        "temperature_unit": "C",
+        "pressure": 101.325,
+        "pressure_unit": "kPa",
+        "composition": 0.99,
+        "impurities": [
+          {"name": "Ethane", "formula": "C2H6", "composition": 0.01}
+        ]
+      },
+      {
+        "name": "Water",
+        "formula": "H2O",
+        "amount": 150.0,
+        "unit": "kmol/h",
+        "state": "liquid",
+        "temperature": 25.0,
+        "temperature_unit": "C",
+        "pressure": 101.325,
+        "pressure_unit": "kPa",
+        "composition": 1.0,
+        "impurities": []
+      },
+      {
+        "name": "Oxygen",
+        "formula": "O2",
+        "amount": 80.0,
+        "unit": "kmol/h",
+        "state": "gas",
+        "temperature": 25.0,
+        "temperature_unit": "C",
+        "pressure": 101.325,
+        "pressure_unit": "kPa",
+        "composition": 0.995,
+        "impurities": [
+          {"name": "Nitrogen", "formula": "N2", "composition": 0.005}
+        ]
+      }
+    ],
+    "additional_info": {
+      "source": "Sample data for methanol production pathway",
+      "notes": "Raw materials for partial oxidation of methane to methanol"
+    }
+  }
