@@ -21,7 +21,7 @@ agent:
 
 # DWSIM Configuration
 dwsim:
-  install_path: "/usr/local/DWSIM"  # Path to DWSIM installation (change for your system)
+  install_path: "/usr/local/bin/dwsim"  # Path to DWSIM installation (change for your system)
   property_package: "NRTL"  # Default property package
   available_property_packages:
     - "PR"        # Peng-Robinson
